@@ -1,6 +1,6 @@
 Node1,Node1 Label,Node1 Score,Node2,Node2 Label,Node2 Score,Result
-0,Alice,1.5,1,Ben,3.5,loss
-2,Charlotte,2.0,5,Fiona,1.5,draw
-3,David,2.0,9,Julia,1.5,win
-4,Emma,2.0,8,Isaac,3.5,loss
-6,Grace,4.0,7,Hannah,3.5,win
+0,Alice,0.5,3,David,2,loss
+1,Ben,2.5,4,Emma,2.5,draw
+2,Charlotte,1.5,5,Fiona,0,win
+6,Grace,1.0,9,Julia,1.0,draw
+7,Hannah,0.5,8,Isaac,0.5,draw

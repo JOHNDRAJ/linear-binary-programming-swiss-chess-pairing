@@ -55,7 +55,7 @@ for i, name in enumerate(names):
     G.nodes[i]['label'] = name
 
 
-for i in range(1):
+for i in range(9):
 
     pairs = solve_pairing_problem(G)
 
