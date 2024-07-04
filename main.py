@@ -69,7 +69,7 @@ def generate_names(size, min_num, max_num):
     
     return result
 
-labels = generate_names(100, 500, 2000)
+labels = generate_names(20, 500, 2000)
 
 # Create a graph
 adjacency_matrix = np.zeros((len(labels),len(labels)))

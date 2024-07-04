@@ -1,0 +1,11 @@
+Node1 School,Node1 Label,Node1 Color,Node1 Score,Node2 School,Node2 Label,Node2 Color,Node2 Score,Result
+AG,Dianna: 1124,White,2,SLO,Aaron: 1328,Black,4,loss
+Templton,Kathryn: 1385,White,1,AG,Diana: 966,Black,0.5,win
+AG,Roberta: 1442,White,1.5,Templton,Ted: 1207,Black,1.5,draw
+SLO,Maria: 1440,White,2,Templton,Sharlene: 1376,Black,3,loss
+SLO,Conrad: 1533,White,5,SLO,Diane: 1175,Black,3,win
+Templton,Marcelina: 1111,White,0.5,AG,Lorena: 1168,Black,2,loss
+SLO,Mary: 1428,White,3.5,AG,Stanley: 1153,Black,3.5,draw
+AG,Kimberly: 1345,White,2,SLO,Shay: 1424,Black,3,loss
+Templton,Micheal: 1448,White,3.5,SLO,Louise: 1415,Black,3.5,draw
+SLO,Jeannette: 1155,White,2.5,Templton,Michelle: 1523,Black,2.5,draw
