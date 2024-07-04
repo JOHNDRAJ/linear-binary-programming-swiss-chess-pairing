@@ -1,3 +1,42 @@
+# import networkx as nx
+# import csv
+
+# def calculate_score(G, node):
+#     """Calculate the score of a node as the sum of the weighted outgoing edges minus the total number of outgoing edges."""
+#     total_weight = sum(data['weight'] for _, _, data in G.out_edges(node, data=True))
+#     num_outgoing_edges = G.out_degree(node)
+#     score = total_weight - num_outgoing_edges
+#     return score
+
+# def export_node_pair_info_to_csv(G, node_pairs, filename):
+#     """Export node pair information to a CSV file."""
+#     with open(filename, mode='w', newline='') as file:
+#         writer = csv.writer(file)
+#         # Write header
+#         writer.writerow(['Node1', 'Node1 Label', 'Node1 Color', 'Node1 Score', 'Node2', 'Node2 Label', 'Node2 Color', 'Node2 Score', 'Result'])
+
+#         for node1, node2 in node_pairs:
+#             node1_label = f"{G.nodes[node1]['label']}: {str(G.nodes[node1]['rating'])}"
+#             node1_color = G.nodes[node1]['color']
+#             node1_score = calculate_score(G, node1)
+#             node2_label = f"{G.nodes[node2]['label']}: {str(G.nodes[node2]['rating'])}"
+#             node2_color = G.nodes[node2]['color']
+#             node2_score = calculate_score(G, node2)
+            
+#             # Determine the result based on the edge weight
+#             if G[node1][node2]['weight'] == 2:
+#                 result = 'win'
+#             elif G[node1][node2]['weight'] == 1.5:
+#                 result = 'draw'
+#             elif G[node1][node2]['weight'] == 1:
+#                 result = 'loss'
+#             else:
+#                 result = 'unknown'  # Handle unexpected weights
+
+#             # Write row for each pair
+#             writer.writerow([node1, node1_label, node1_color, node1_score, node2, node2_label, node2_color, node2_score, result])
+
+
 import networkx as nx
 import csv
 
@@ -8,36 +47,21 @@ def calculate_score(G, node):
     score = total_weight - num_outgoing_edges
     return score
 
-'''
 def export_node_pair_info_to_csv(G, node_pairs, filename):
     """Export node pair information to a CSV file."""
     with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
         # Write header
-        writer.writerow(['Node1', 'Node1 Label', 'Node1 Score', 'Node2', 'Node2 Label', 'Node2 Score','Result'])
+        writer.writerow(['Node1 School', 'Node1 Label', 'Node1 Color', 'Node1 Score', 'Node2 School', 'Node2 Label', 'Node2 Color', 'Node2 Score', 'Result'])
 
         for node1, node2 in node_pairs:
-            node1_label = G.nodes[node1]['label']
+            node1_school = G.nodes[node1]['school']
+            node1_label = f"{G.nodes[node1]['label']}: {str(G.nodes[node1]['rating'])}"
+            node1_color = G.nodes[node1]['color']
             node1_score = calculate_score(G, node1)
-            node2_label = G.nodes[node2]['label']
-            node2_score = calculate_score(G, node2)
-            
-            # Write row for each pair
-            writer.writerow([node1, node1_label, node1_score, node2, node2_label, node2_score])
-'''
-
-
-def export_node_pair_info_to_csv(G, node_pairs, filename):
-    """Export node pair information to a CSV file."""
-    with open(filename, mode='w', newline='') as file:
-        writer = csv.writer(file)
-        # Write header
-        writer.writerow(['Node1', 'Node1 Label', 'Node1 Score', 'Node2', 'Node2 Label', 'Node2 Score', 'Result'])
-
-        for node1, node2 in node_pairs:
-            node1_label = G.nodes[node1]['label']
-            node1_score = calculate_score(G, node1)
-            node2_label = G.nodes[node2]['label']
+            node2_school = G.nodes[node2]['school']
+            node2_label = f"{G.nodes[node2]['label']}: {str(G.nodes[node2]['rating'])}"
+            node2_color = G.nodes[node2]['color']
             node2_score = calculate_score(G, node2)
             
             # Determine the result based on the edge weight
@@ -51,4 +75,4 @@ def export_node_pair_info_to_csv(G, node_pairs, filename):
                 result = 'unknown'  # Handle unexpected weights
 
             # Write row for each pair
-            writer.writerow([node1, node1_label, node1_score, node2, node2_label, node2_score, result])
+            writer.writerow([node1_school, node1_label, node1_color, node1_score, node2_school, node2_label, node2_color, node2_score, result])
