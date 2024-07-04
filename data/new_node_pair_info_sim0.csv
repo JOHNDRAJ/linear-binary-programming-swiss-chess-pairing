@@ -1,6 +1,26 @@
-Node1,Node1 Label,Node1 Score,Node2,Node2 Label,Node2 Score,Result
-0,Alice,0.5,9,Julia,0.5,draw
-1,Ben,1,3,David,0,win
-2,Charlotte,1,6,Grace,0,win
-4,Emma,0.5,5,Fiona,0.5,draw
-7,Hannah,0.5,8,Isaac,0.5,draw
+Node1 School,Node1 Label,Node1 Color,Node1 Score,Node2 School,Node2 Label,Node2 Color,Node2 Score,Result
+Templton,Christine: 1021,White,1,AG,Mildred: 1033,Black,0,win
+Templton,Arthur: 1219,White,1,AG,Nina: 1213,Black,0,win
+AG,Aaron: 1067,White,0,Templton,Marvin: 1072,Black,1,loss
+SLO,Deborah: 1203,White,1,AG,Belinda: 1198,Black,0,win
+AG,Kristi: 1045,White,0,Templton,Elizabeth: 1062,Black,1,loss
+Templton,Mary: 1099,White,0,AG,Linda: 1077,Black,1,loss
+AG,Stephen: 1317,White,0,Templton,Zachary: 1326,Black,1,loss
+SLO,David: 1178,White,0,AG,Kip: 1159,Black,1,loss
+AG,Mario: 1386,White,0,Templton,Zoraida: 1355,Black,1,loss
+SLO,Carolyn: 1218,White,1,AG,Charles: 1187,Black,0,win
+AG,Andrew: 1360,White,1,SLO,Evangelina: 1338,Black,0,win
+SLO,Barbara: 1024,White,0,Templton,Jack: 974,Black,1,loss
+SLO,Kim: 1154,White,1,Templton,Virginia: 1141,Black,0,win
+SLO,Cynthia: 1121,White,0,AG,Jennifer: 1116,Black,1,loss
+SLO,Ronald: 1125,White,1,AG,Steven: 1094,Black,0,win
+SLO,Shannon: 1333,White,1,AG,Thomas: 1307,Black,0,win
+AG,Sarah: 1234,White,1,SLO,Erik: 1229,Black,0,win
+AG,Boris: 1117,White,0,SLO,Patricia: 1120,Black,1,loss
+AG,William: 1273,White,0,SLO,Angelo: 1261,Black,1,loss
+AG,Larry: 1240,White,1,SLO,Latesha: 1222,Black,0,win
+Templton,Betty: 947,White,0,AG,John: 862,Black,1,loss
+SLO,Vincent: 1035,White,0,AG,Catherine: 1042,Black,1,loss
+Templton,Abdul: 937,White,0.5,AG,Penny: 911,Black,0.5,draw
+Templton,Dustin: 1131,White,1,AG,Bryon: 1112,Black,0,win
+Templton,June: 981,White,1,AG,Michael: 1014,Black,0,win

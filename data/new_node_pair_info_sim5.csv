@@ -1,6 +1,26 @@
-Node1,Node1 Label,Node1 Score,Node2,Node2 Label,Node2 Score,Result
-0,Alice,1.5,5,Fiona,0,win
-1,Ben,2,4,Emma,3,loss
-2,Charlotte,1.5,3,David,3,loss
-6,Grace,1.0,9,Julia,1.0,draw
-7,Hannah,1,8,Isaac,0,win
+Node1,Node1 Label,Node1_Match_Hist,Node1 Score,Node2,Node2 Label,Node2_Match_Hist,Node2 Score,Result
+0,temp: 1516,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,48,temp: 1303,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",0.5,win
+1,temp: 1446,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,33,temp: 1320,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.0,draw
+2,temp: 1405,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,28,temp: 1249,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,draw
+3,temp: 1610,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,40,temp: 1783,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,loss
+4,temp: 1865,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.0,20,temp: 1903,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,win
+5,temp: 1630,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.0,41,temp: 1291,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",1,win
+6,temp: 1691,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.0,32,temp: 1592,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",1.0,win
+7,temp: 1973,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.0,46,temp: 2009,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,draw
+8,temp: 1412,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3,26,temp: 1319,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2,win
+9,temp: 1940,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,12,temp: 2079,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",0,win
+10,temp: 1355,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.0,30,temp: 1423,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,win
+11,temp: 1433,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,35,temp: 1456,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,draw
+13,temp: 1750,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,23,temp: 1593,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,draw
+14,temp: 1930,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,25,temp: 1889,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,win
+15,temp: 1968,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,16,temp: 2013,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,draw
+17,temp: 1516,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",5.0,47,temp: 1649,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,win
+18,temp: 1728,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,22,temp: 1756,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.0,win
+19,temp: 2062,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,44,temp: 1990,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,win
+21,temp: 1722,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,39,temp: 1293,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",5.5,loss
+24,temp: 1952,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,27,temp: 2030,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,win
+29,temp: 1850,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2,34,temp: 1764,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.0,loss
+31,temp: 2018,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,38,temp: 2044,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2,win
+36,temp: 1745,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,43,temp: 1823,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,draw
+37,temp: 1236,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3.5,42,temp: 1414,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",2.5,win
+45,temp: 2060,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",3,49,temp: 1993,"['temp', 'temp', 'temp', 'temp', 'temp', 'temp']",4.5,loss

@@ -1,43 +1,47 @@
-import pandas as pd
-import matplotlib.pyplot as plt
+# import pandas as pd
+# import ast
 
-def visualize_scores(csv_file_path):
+# def transform_csv_data(csv_file_path):
+#     # Read CSV data
+#     df = pd.read_csv(csv_file_path)
+
+#     # Convert string representations of lists to actual lists if needed (remove if 'color' is not a list)
+#     # df['Node1_Color'] = df['Node1_Color'].apply(ast.literal_eval)
+#     # df['Node2_Color'] = df['Node2_Color'].apply(ast.literal_eval)
+
+#     # Create a new DataFrame with the desired format
+#     transformed_data = pd.DataFrame({
+#         'Node1': df['Node1'],
+#         'Node1 Label': df['Node1 Label'],
+#         'Node1 Color': df['Node1 Color'],
+#         'Node1 Score': df['Node1 Score'],
+#         'Node2': df['Node2'],
+#         'Node2 Label': df['Node2 Label'],
+#         'Node2 Color': df['Node2 Color'],
+#         'Node2 Score': df['Node2 Score'],
+#         'Result': df['Result']
+#     })
+
+#     return transformed_data
+
+import pandas as pd
+import ast
+
+def transform_csv_data(csv_file_path):
     # Read CSV data
     df = pd.read_csv(csv_file_path)
 
-    # Create a DataFrame with the players and their scores
-    players = pd.concat([df[['Node1', 'Node1 Label', 'Node1 Score']], 
-                         df[['Node2', 'Node2 Label', 'Node2 Score']].rename(columns={'Node2': 'Node1', 'Node2 Label': 'Node1 Label', 'Node2 Score': 'Node1 Score'})])
+    # Create a new DataFrame with the desired format
+    transformed_data = pd.DataFrame({
+        'Node1 School': df['Node1 School'],
+        'Node1 Label': df['Node1 Label'],
+        'Node1 Color': df['Node1 Color'],
+        'Node1 Score': df['Node1 Score'],
+        'Node2 School': df['Node2 School'],
+        'Node2 Label': df['Node2 Label'],
+        'Node2 Color': df['Node2 Color'],
+        'Node2 Score': df['Node2 Score'],
+        'Result': df['Result']
+    })
 
-    # Rename columns for clarity
-    players.columns = ['Node', 'Label', 'Score']
-
-    # Drop duplicates to ensure each player is listed once
-    players = players.drop_duplicates(subset=['Label'])
-
-    # Sort by score
-    players = players.sort_values(by='Score', ascending=False)
-
-    # Merge to get opponent information
-    df1 = df[['Node1', 'Node1 Label', 'Node1 Score', 'Node2 Label', 'Result']]
-    df2 = df[['Node2', 'Node2 Label', 'Node2 Score', 'Node1 Label', 'Result']]
-    df2.columns = ['Node1', 'Node1 Label', 'Node1 Score', 'Node2 Label', 'Result']
-
-    # Concatenate and remove duplicates
-    merged = pd.concat([df1, df2]).drop_duplicates(subset=['Node1 Label'])
-
-    # Merge to get a complete DataFrame with opponent information
-    complete = pd.merge(players, merged, left_on='Label', right_on='Node1 Label', how='left')
-
-    # Drop unnecessary columns
-    complete = complete[['Node1 Label', 'Score','Node2 Label', 'Result']]
-
-    # Plotting
-    fig, ax = plt.subplots(figsize=(10, 6))
-    ax.axis('off')
-    table = ax.table(cellText=complete.values, colLabels=complete.columns, cellLoc='center', loc='center')
-
-    # Adjust layout
-    table.scale(1, 2)
-    plt.title('Players Sorted by Score with Opponent Information')
-    plt.show()
+    return transformed_data
