@@ -63,12 +63,12 @@ def add_constraints(prob, G, group_nodes, x):
     # 1. No two players can be matched if they have previously been matched
     for i in range(len(group_nodes)):
         for j in range(i + 1, len(group_nodes)):
-            if G.has_edge(group_nodes[i], group_nodes[j]):
-                prob += x[group_nodes[i], group_nodes[j]] == 0
+            if G.has_edge(min(group_nodes[i], group_nodes[j]), max(group_nodes[i], group_nodes[j])):
+                prob += x[min(group_nodes[i], group_nodes[j]), max(group_nodes[i], group_nodes[j])] == 0
 
     # 2. No player can be matched with multiple players during this pass
     for i in range(len(group_nodes)):
-        prob += lpSum(x[group_nodes[min(i, j)], group_nodes[max(i, j)]] for j in range(len(group_nodes)) if i != j) <= 1
+        prob += lpSum(x[min(group_nodes[i], group_nodes[j]), max(group_nodes[i], group_nodes[j])] for j in range(len(group_nodes)) if i != j) <= 1
 
 def solve_group_pairing(G, group_nodes):
     # Create decision variables
@@ -236,7 +236,7 @@ def color_objective_function(G, match_list, group_nodes, x):
                         prob += x[min(a, group_nodes[j]), max(a, group_nodes[j])] == 0
                         prob += x[min(group_nodes[i], b), max(group_nodes[i], b)] == 0
     
-    colorSamePenalty = lpSum(x[group_nodes[i], group_nodes[j]] * abs(G.nodes[group_nodes[i]]['colorNum'] + G.nodes[group_nodes[j]]['colorNum'])
+    colorSamePenalty = lpSum(x[min(group_nodes[i], group_nodes[j]), max(group_nodes[i], group_nodes[j])] * abs(G.nodes[group_nodes[i]]['colorNum'] + G.nodes[group_nodes[j]]['colorNum'])
                              for i in range(len(group_nodes)) for j in range(i + 1, len(group_nodes)))
     
     for i in range(len(group_nodes)):
