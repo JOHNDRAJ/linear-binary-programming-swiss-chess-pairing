@@ -78,7 +78,6 @@ def set_objective_function(prob, x, nodes, scores, ratings, colors, schools, wei
     ratingDiffPenalty = lpSum(weightRating * x[i,j] * abs(ratings[i] - ratings[j])
                               for i in range(len(ratings)) for j in range(i+1, len(ratings))) / rating_normalization_constant(ratings, nodes)
     
-    #need to add color weighting
     colorSamePenalty = lpSum(weightColors * x[i, j] * abs(colors[i] + colors[j])
                              for i in range(len(nodes)) for j in range(i + 1, len(nodes))) / color_normalization_constant(colors, nodes)
     

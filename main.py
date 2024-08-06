@@ -4,6 +4,11 @@ from utils.export_data import export_node_pair_info_to_csv
 from utils.tests import test_pairs
 from utils.simulate_scenarios import add_weighted_edges
 from utils.visulize_data import transform_csv_data
+from optimization.realistic_optimization import plausible_groups
+from optimization.realistic_optimization import best_UL_outcome
+from optimization.realistic_optimization import extract_final_solution
+from optimization.realistic_optimization import extract_nodes_and_edges
+from optimization.realistic_optimization import create_score_groups
 import networkx as nx
 import numpy as np
 import csv
@@ -96,22 +101,38 @@ sdDict = {}
 ratingOutcomeDict = {}
 
 durations = ['full', 3, 'full', 'full']
-for i in range(5):
-    #score, rating, color, school
-    pairs, scores, sameSchoolNum = solve_pairing_problem(G, durations[0], durations[1], durations[2], durations[3])
-    for i in range(len(durations)):
-        if isinstance(durations[i], int) and durations[i] > 0:
-            durations[i] -= 1
 
-    for (j,k) in pairs:
-        scoreDiff = abs(scores[j] - scores[k])
-        ratingDiff = abs(G.nodes[j]['rating'] - G.nodes[k]['rating'])
-        weightDiffList.append((scoreDiff, ratingDiff))
-        if scoreDiff in sdDict:
-            sdDict[scoreDiff] += 1
-        else:
-            sdDict[scoreDiff] = 1
-        print(ratingDiff)
+for i in range(5):
+    nodes, edges, ratings, colors, schools = extract_nodes_and_edges(G)
+    score_groups = create_score_groups(G, nodes)
+
+    # Example usage of optimize_score_groups function
+    updated_groups = plausible_groups(G, score_groups)
+    print(updated_groups)
+
+    upper_lower_groups = best_UL_outcome(G, updated_groups)
+    print(upper_lower_groups)
+
+    final_pairings = extract_final_solution(G, updated_groups, upper_lower_groups)
+    pairs = []
+    for group in final_pairings:
+        for i in final_pairings[group]:
+            pairs.append(i)
+    # #score, rating, color, school
+    # pairs, scores, sameSchoolNum = solve_pairing_problem(G, durations[0], durations[1], durations[2], durations[3])
+    # for i in range(len(durations)):
+    #     if isinstance(durations[i], int) and durations[i] > 0:
+    #         durations[i] -= 1
+
+    # for (j,k) in pairs:
+    #     scoreDiff = abs(scores[j] - scores[k])
+    #     ratingDiff = abs(G.nodes[j]['rating'] - G.nodes[k]['rating'])
+    #     weightDiffList.append((scoreDiff, ratingDiff))
+    #     if scoreDiff in sdDict:
+    #         sdDict[scoreDiff] += 1
+    #     else:
+    #         sdDict[scoreDiff] = 1
+    #     print(ratingDiff)
 
     
     
@@ -170,7 +191,7 @@ print(f"Average rating difference: {ratingDiffMean}")
 # print(f"Average color balance: {colorNumberMean}") #positive is white, negative is black
 print(f"Largest single color imbalance: {maxImbalance}, {numImbalances} times")
 print(f"Largest color streak: {maxStreak}, {numStreaks} times")
-print(f"Schools played themselves {sameSchoolNum} times")
+# print(f"Schools played themselves {sameSchoolNum} times")
 
 sdDict = {key: sdDict[key] for key in sorted(sdDict)}
 for i in sdDict:
@@ -184,8 +205,5 @@ for i in ratingOutcomeDict:
 
 
 plot_dict(ratingOutcomeDict)
-
-
-asdfasdfa
 
 
