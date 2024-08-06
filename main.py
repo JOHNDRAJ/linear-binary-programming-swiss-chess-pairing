@@ -63,18 +63,21 @@ def generate_names(size, min_num, max_num):
     std_dev = (max_num - min_num) / 6  # Choose a standard deviation that covers most of the range
 
     # Keep generating names until we have the desired number of unique names
+    initial_rating = min_num
     while len(unique_first_names) < size:
         first_name = names.get_first_name()
         school = random.choice(schoolList)
         if first_name not in unique_first_names:
             unique_first_names.add(first_name)
             # Generate a random number with a normal distribution and clip it to the range
-            random_number = int(np.clip(np.random.normal(mean, std_dev), min_num, max_num))
+            random_number = min_num
+            # random_number = int(np.clip(np.random.normal(mean, std_dev), min_num, max_num))
             result.append((first_name, random_number, school))
+        min_num += 1000
     
     return result
 
-labels = generate_names(20, 500, 2000)
+labels = generate_names(10, 1, 20)
 
 # Create a graph
 adjacency_matrix = np.zeros((len(labels),len(labels)))
@@ -108,16 +111,17 @@ for i in range(5):
 
     # Example usage of optimize_score_groups function
     updated_groups = plausible_groups(G, score_groups)
-    print(updated_groups)
+    # print(updated_groups)
 
     upper_lower_groups = best_UL_outcome(G, updated_groups)
-    print(upper_lower_groups)
+    # print(upper_lower_groups)
 
     final_pairings = extract_final_solution(G, updated_groups, upper_lower_groups)
     pairs = []
     for group in final_pairings:
         for i in final_pairings[group]:
             pairs.append(i)
+    print(final_pairings)
     # #score, rating, color, school
     # pairs, scores, sameSchoolNum = solve_pairing_problem(G, durations[0], durations[1], durations[2], durations[3])
     # for i in range(len(durations)):

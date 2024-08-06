@@ -22,7 +22,6 @@ def create_score_groups(G, nodes):
             groups[G.nodes[node]['score']].append(node)
         else:
             groups[G.nodes[node]['score']] = [node]
-    print(f"groups {groups}")
     return groups
 
 def create_lp_variables(nodes):
@@ -94,7 +93,7 @@ def solve_group_pairing(G, group_nodes):
 
     # unpaired_players = [node for node in group_nodes if lpSum(x[min(node, j), max(node, j)].value() for j in group_nodes if node != j) == 0]
     # unpaired_players = [group_nodes[i] for i in range(len(group_nodes)) if lpSum(x[group_nodes[min(i, j)], group_nodes[max(i, j)]].value() for j in range(len(group_nodes)) if i != j) == 0]
-    print(match_list)
+    # print(match_list)
     return match_list, unpaired_players
 
     # Extract the solution
@@ -134,6 +133,7 @@ def plausible_groups(G, score_groups):
 def upper_lower_objective_function(G, group_nodes, x):
     prob = LpProblem("Maximize_Upper_Lower", LpMaximize)
     sorted_nodes = sorted(group_nodes, key=lambda n: G.nodes[n]['rating'], reverse=True)
+    names = [G.nodes[i]['label'] for i in sorted_nodes]
     
     # Change: Generate penalty pairs to ensure upper vs. lower pairings
     pairs_with_penalties = []
@@ -197,7 +197,7 @@ def solve_upper_lower_pairing(G, group_nodes):
         print(f"Problem Status: {LpStatus[prob.status]}")
         return []
 
-    print(group_nodes)
+    # print(group_nodes)
     # for (i, j), var in x.items():
     #     print(var.value())
     match_list = [(i, j) for (i, j) in x if x[i, j].value() == 1]
