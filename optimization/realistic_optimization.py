@@ -15,14 +15,62 @@ def extract_nodes_and_edges(G):
 def calculate_scores(G, nodes):
     return {i: sum(G[i][j]['weight'] for j in G[i]) for i in nodes} #dict where keys are int nodes and values are sum of node's game score
 
+def find_lowest_node(G, score_groups):
+    """
+    Finds the node with the lowest rating where 'byeStatus' is 0,
+    starting from the lowest key in the dictionary and moving up.
+
+    Parameters:
+    node_dict (dict): Dictionary where keys are numbers and values are lists of nodes.
+
+    Returns:
+    The node with the lowest rating and 'byeStatus' equal to 0.
+    Returns None if no such node is found.
+    """
+    lowest_rating_node = None
+    lowest_rating = float('inf')
+
+    # Iterate through the dictionary sorted by keys (lowest to highest)
+    for key in sorted(score_groups.keys()):
+        nodes = score_groups[key]
+        
+        for node in nodes:
+            # Check if the node is eligible
+            if G.nodes[node]['byeStatus'] == 0:
+                # Compare ratings
+                if G.nodes[node]['rating'] < lowest_rating:
+                    lowest_rating = G.nodes[node]['rating']
+                    lowest_rating_node = node
+
+    return lowest_rating_node
+
 def create_score_groups(G, nodes):
+    lowest_rated_node = None
     groups = {}
     for node in nodes:
         if G.nodes[node]['score'] in groups:
             groups[G.nodes[node]['score']].append(node)
         else:
             groups[G.nodes[node]['score']] = [node]
-    return groups
+
+    #give bye if odd number of players
+    lowest_rating = float('inf')
+    lowest_node = None
+    if len(nodes) % 2 != 0:
+        for key in sorted(groups.keys()):
+            for node in groups[key]:
+                if G.nodes[node]['byeStatus'] == 0:
+                    if G.nodes[node]['rating'] < lowest_rating:
+                        lowest_rating = G.nodes[node]['rating']
+                        lowest_node = node
+            if lowest_node != None:
+                groups[key].remove(lowest_node)
+                break
+
+        # lowest_group = min(groups.keys())
+        # lowest_rated_node = min(groups[lowest_group], key=lambda node: G.nodes[node]['rating'])
+        # groups[lowest_group].remove(lowest_rated_node)
+    return groups, lowest_node
 
 def create_lp_variables(nodes):
     sorted_nodes = sorted(nodes)
@@ -127,6 +175,9 @@ def plausible_groups(G, score_groups):
         matches, unpaired_players = solve_group_pairing(G, score_groups[group])
         score_groups = update_groups(unpaired_players, score_groups)
     # print(score_groups)
+    for group in score_groups:
+        score_groups[group].sort()
+    print(f"plausible {score_groups}")
     return score_groups
 
 
@@ -176,9 +227,17 @@ def generate_penalty_pairs(n, max_deviation=3):
             pairs_with_penalties.append(((i, j), penalty))
     return pairs_with_penalties
 
-def solve_upper_lower_pairing(G, group_nodes):
+def solve_upper_lower_pairing(G, group_nodes, score_groups):
+    
+    keys = sorted(score_groups.keys())
+    current_key = next(key for key, val in score_groups.items() if val == group_nodes)
+    # print(f"keys: {keys}")
+    # print(f"current_key: {current_key}")
+    if keys.index(current_key) < len(keys) - 1:
+        next_key = keys[keys.index(current_key) + 1]
+
     if len(group_nodes) <= 1:
-        return (group_nodes)
+        return (group_nodes), current_key
 
     # Create decision variables
     x = create_lp_variables(group_nodes)
@@ -194,20 +253,41 @@ def solve_upper_lower_pairing(G, group_nodes):
     
     # Check the status of the problem
     if LpStatus[prob.status] != 'Optimal':
-        print(f"Problem Status: {LpStatus[prob.status]}")
-        return []
+        if len(keys) < 2:
+            raise ValueError("pairing failed in the highest score group")
+        print(f"Upper Lower Problem Status: {LpStatus[prob.status]}")
+        #at this point i think that the best approach would be to continually move the lowest score groups into the next highest group until a successful pairing is possible
+        del score_groups[current_key]
+        try:
+            print(next_key)
+            score_groups[next_key] += group_nodes
+        except NameError as e:
+            print(f"there is no higher score group to append to: {e}")
+        return solve_upper_lower_pairing(G, score_groups[next_key], score_groups)
 
     # print(group_nodes)
     # for (i, j), var in x.items():
     #     print(var.value())
     match_list = [(i, j) for (i, j) in x if x[i, j].value() == 1]
-    return match_list
+    print(f"new_match_list: {match_list}")
+    return match_list, current_key
 
 def best_UL_outcome(G, score_groups):
     group_match_lists = {}
-    for group in score_groups:
-        match_list = solve_upper_lower_pairing(G, score_groups[group])
-        group_match_lists[group] = match_list
+    groups = list(reversed(sorted(score_groups.keys())))
+    initial_score_groups_size = len(score_groups)
+    i = 0
+    while i < len(score_groups) and len(score_groups) == initial_score_groups_size:     #iterates through every group unless dict changes sizes meaning final score group was reached and needed to be dealt with
+        match_list, key = solve_upper_lower_pairing(G, score_groups[groups[i]], score_groups)
+        group_match_lists[key] = match_list     #using key so in case final score group need to be moved up
+        print(f"\nscore_groups: {score_groups}")
+        print(f"group match lists x: {group_match_lists}\n")
+        i += 1
+    # print(group_match_lists)
+    # print(f"score groups: {score_groups}")
+    for key in group_match_lists:
+        if not any(isinstance(node, tuple) for node in group_match_lists[key]):
+            group_match_lists[key] = []
     return group_match_lists
 
 def find_tuple_containing_value(tuples_list, value):
@@ -217,6 +297,10 @@ def find_tuple_containing_value(tuples_list, value):
     return None
 
 def color_objective_function(G, match_list, group_nodes, x):
+    print(f"color_nodes: {group_nodes}")
+    print(f"match_list: {match_list}")
+    for (i, j) in x:
+        print(i, j)
     prob = LpProblem("Minimize_Color_Variance", LpMinimize)
     for (a, b) in match_list:
         for i in range(len(group_nodes)):
@@ -265,7 +349,7 @@ def solve_color_pairing(G, group_nodes, match_list):
     
     # Check the status of the problem
     if LpStatus[prob.status] != 'Optimal':
-        print(f"Problem Status: {LpStatus[prob.status]}")
+        print(f"Color Problem Status: {LpStatus[prob.status]}")
         return []
 
     match_list = [(i, j) for (i, j) in x if x[i, j].value() == 1]
@@ -309,6 +393,14 @@ def solve_color_pairing(G, group_nodes, match_list):
     return match_list
 
 def extract_final_solution(G, score_groups, group_match_lists):
+    keys_to_delete = [key for key in score_groups if score_groups[key] == []]
+    for key in keys_to_delete:
+        del score_groups[key]
+    keys_to_delete = [key for key in group_match_lists if group_match_lists[key] == []]
+    for key in keys_to_delete:
+        del group_match_lists[key]
+
+
     new_group_match_lists = {}
     assert len(score_groups) == len(group_match_lists)
     for (key1, group_nodes), (key2, match_list) in zip(score_groups.items(), group_match_lists.items()):

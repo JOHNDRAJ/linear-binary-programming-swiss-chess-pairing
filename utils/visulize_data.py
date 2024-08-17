@@ -33,12 +33,12 @@ def transform_csv_data(csv_file_path):
 
     # Create a new DataFrame with the desired format
     transformed_data = pd.DataFrame({
-        'Node1 School': df['Node1 School'],
         'Node1 Label': df['Node1 Label'],
+        'Node1 School': df['Node1 School'],
         'Node1 Color': df['Node1 Color'],
         'Node1 Score': df['Node1 Score'],
-        'Node2 School': df['Node2 School'],
         'Node2 Label': df['Node2 Label'],
+        'Node2 School': df['Node2 School'],
         'Node2 Color': df['Node2 Color'],
         'Node2 Score': df['Node2 Score'],
         'Result': df['Result']

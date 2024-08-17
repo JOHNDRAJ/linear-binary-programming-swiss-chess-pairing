@@ -1,11 +1,5 @@
-Node1 School,Node1 Label,Node1 Color,Node1 Score,Node2 School,Node2 Label,Node2 Color,Node2 Score,Result
-AG,Amy: 1304,White,2.0,SLO,Robert: 1189,Black,2.0,draw
-SLO,Merle: 1179,White,3,Templton,Virgil: 1250,Black,2.0,win
-AG,Soila: 1554,White,3.5,Templton,Kelsey: 1002,Black,2.5,win
-SLO,Cruz: 1067,White,0.5,AG,Heriberto: 1184,Black,3.0,loss
-Templton,William: 922,White,2.0,AG,Justin: 1296,Black,2.0,draw
-SLO,Mary: 1290,White,3,Templton,John: 1637,Black,3.5,loss
-SLO,Soledad: 1297,White,4.5,AG,Raymond: 1602,Black,3,win
-AG,Chad: 1066,White,3,Templton,Michael: 1505,Black,4,loss
-Templton,Norma: 1203,White,2.5,AG,Dana: 993,Black,1.5,win
-AG,Barbara: 1335,White,2,AG,Fred: 996,Black,0.5,win
+Node1 Label,Node1 School,Node1 Color,Node1 Score,Node2 Label,Node2 School,Node2 Color,Node2 Score,Result
+Rodney: 99,AG,Black,2,Jason: 495,Templton,White,3,loss
+Steven: 198,Templton,White,2,Roger: 594,SLO,Black,4,loss
+Earl: 297,AG,White,1.5,Edward: 396,Templton,Black,0.5,win
+Joan: 0,Templton,White,0.5,BYE,BYE,BYE,BYE,N/A

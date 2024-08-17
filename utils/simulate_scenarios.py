@@ -14,8 +14,16 @@ def add_weighted_edges(G, node_pairs):
 
     # Iterate over each node pair
     for i, j in node_pairs:
+        weight_ii = None
+        weight_jj = None
+        if i == 'BYE':
+            weight_jj = 1.5
+            G.nodes[j]['score'] += 0.5
+        elif j == 'BYE':
+            weight_ii = 1.5
+            G.nodes[i]['score'] += 0.5    
         # Randomly choose one of the weight options
-        if (G.nodes[i]['rating'] - G.nodes[j]['rating']) > 400:
+        elif (G.nodes[i]['rating'] - G.nodes[j]['rating']) > 400:
             weight_ij, weight_ji = random.choices(weight_options, weights=w[0], k=1)[0]
         elif (G.nodes[i]['rating'] - G.nodes[j]['rating']) > 300:
             weight_ij, weight_ji = random.choices(weight_options, weights=w[1], k=1)[0]
@@ -38,20 +46,26 @@ def add_weighted_edges(G, node_pairs):
         else:
             weight_ij, weight_ji = random.choices(weight_options, weights=reversed(w[0]), k=1)[0]
 
-        if weight_ij == 2:
-            G.nodes[i]['score'] += 1
-        elif weight_ij == 1.5:
-            G.nodes[i]['score'] += 0.5
-            G.nodes[j]['score'] += 0.5
-        else:
-            G.nodes[j]['score'] += 1
+        if i != 'BYE' and j != 'BYE':
+            if weight_ij == 2:
+                G.nodes[i]['score'] += 1
+            elif weight_ij == 1.5:
+                G.nodes[i]['score'] += 0.5
+                G.nodes[j]['score'] += 0.5
+            else:
+                G.nodes[j]['score'] += 1
 
         
         
         
 
         # Update the weights in the graph
-        G.add_edge(i, j, weight=weight_ij)
-        G.add_edge(j, i, weight=weight_ji)
+        if weight_ii:
+            G.add_edge(i, i, weight=weight_ii)
+        elif weight_jj:
+            G.add_edge(j, j, weight=weight_jj)
+        else:
+            G.add_edge(i, j, weight=weight_ij)
+            G.add_edge(j, i, weight=weight_ji)
 
     return G

@@ -73,11 +73,11 @@ def generate_names(size, min_num, max_num):
             random_number = min_num
             # random_number = int(np.clip(np.random.normal(mean, std_dev), min_num, max_num))
             result.append((first_name, random_number, school))
-        min_num += 1000
+        min_num += 99
     
     return result
 
-labels = generate_names(10, 1, 20)
+labels = generate_names(7, 0, 20)
 
 # Create a graph
 adjacency_matrix = np.zeros((len(labels),len(labels)))
@@ -93,6 +93,7 @@ for i, (name, rating, school) in enumerate(labels):
     G.nodes[i]['colorStreak'] = 1
     G.nodes[i]['school'] = school
     G.nodes[i]['score'] = 0
+    G.nodes[i]['byeStatus'] = 0
 
 
 dataList = []
@@ -107,20 +108,23 @@ durations = ['full', 3, 'full', 'full']
 
 for i in range(5):
     nodes, edges, ratings, colors, schools = extract_nodes_and_edges(G)
-    score_groups = create_score_groups(G, nodes)
+    score_groups, lowest_rated_node = create_score_groups(G, nodes)
 
     # Example usage of optimize_score_groups function
     updated_groups = plausible_groups(G, score_groups)
     # print(updated_groups)
 
     upper_lower_groups = best_UL_outcome(G, updated_groups)
+    print(f"groups: {updated_groups}")
     # print(upper_lower_groups)
 
     final_pairings = extract_final_solution(G, updated_groups, upper_lower_groups)
     pairs = []
     for group in final_pairings:
-        for i in final_pairings[group]:
-            pairs.append(i)
+        for j in final_pairings[group]:
+            pairs.append(j)
+    if lowest_rated_node is not None:
+        pairs.append((lowest_rated_node, 'BYE'))
     print(final_pairings)
     # #score, rating, color, school
     # pairs, scores, sameSchoolNum = solve_pairing_problem(G, durations[0], durations[1], durations[2], durations[3])
@@ -141,7 +145,7 @@ for i in range(5):
     
     
 
-    test_pairs(G, pairs)
+    # test_pairs(G, pairs)
 
     add_weighted_edges(G, pairs)
 
@@ -158,8 +162,8 @@ for i in dataList:
 def round_to_nearest_50(num):
     return round(num / 50) * 50
 
-scoreDiffMean = sum([i for (i,j) in weightDiffList])/len(weightDiffList)
-ratingDiffMean = sum([j for (i,j) in weightDiffList])/len(weightDiffList)
+# scoreDiffMean = sum([i for (i,j) in weightDiffList])/len(weightDiffList)
+# ratingDiffMean = sum([j for (i,j) in weightDiffList])/len(weightDiffList)
 colorNumberMean = sum([G.nodes[i]['colorNum'] for i in G.nodes])/len(G.nodes)
 
 maxImbalance = 0
@@ -190,8 +194,8 @@ for i in G.nodes:
     elif G.nodes[i]['colorStreak'] == maxStreak:
         numStreaks += 1
 
-print(f"Average score difference: {scoreDiffMean}")
-print(f"Average rating difference: {ratingDiffMean}")
+# print(f"Average score difference: {scoreDiffMean}")
+# print(f"Average rating difference: {ratingDiffMean}")
 # print(f"Average color balance: {colorNumberMean}") #positive is white, negative is black
 print(f"Largest single color imbalance: {maxImbalance}, {numImbalances} times")
 print(f"Largest color streak: {maxStreak}, {numStreaks} times")
