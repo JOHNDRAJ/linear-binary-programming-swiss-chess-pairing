@@ -1,8 +1,0 @@
-50 people, 5 rounds
-Average score differeence 0.096
-Average rating difference 62.552
-diff: 0, 105 times
-diff: 0.5, 17 times
-diff: 1, 2 times
-diff: 1.5, 1 times
-
