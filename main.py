@@ -1,4 +1,4 @@
-from optimization.primary_optimization import solve_pairing_problem
+from optimization.experimental_optimization import solve_pairing_problem
 from utils.import_data import add_edges_from_optimized_csv
 from utils.export_data import export_node_pair_info_to_csv
 from utils.tests import test_pairs
@@ -17,43 +17,15 @@ import random
 import names
 from visualize_dictionary import plot_dict
 
-
-"""
-#%%
-# List of names for the nodes
-names = ['Alice', 'Ben', 'Charlotte', 'David', 'Emma', 'Fiona', 'Grace', 'Hannah', 'Isaac', 'Julia']
-
-# Create a graph
-adjacency_matrix = np.zeros((len(names),len(names)))
-G = nx.from_numpy_array(adjacency_matrix,create_using=nx.DiGraph)
-
-# Add labels as node attributes
-for i, name in enumerate(names):
-    G.nodes[i]['label'] = name
-#%%
-
-pairs = solve_pairing_problem(G)
-
-#%%
-
-test_pairs(G, pairs)
-
-
-#%%
-
-filename = 'data/node_pair_info4.csv'
-
-add_weighted_edges(G, pairs)
-#%%
-
-export_node_pair_info_to_csv(G, pairs, filename)
-
-visualize_scores('data/node_pair_info4.csv')
-"""
-
-# List of names for the nodes
-#names = ['Alice', 'Ben', 'Charlotte', 'David', 'Emma', 'Fiona', 'Grace', 'Hannah', 'Isaac', 'Julia']
-# names = [('Alice', 1200), ('Ben', 1300), ('Charlotte', 1400), ('David', 1500), ('Emma', 1600), ('Fiona', 1700), ('Grace', 1800), ('Hannah', 1900), ('Isaac', 2000), ('Julia', 2100)]
+def load_players_from_csv(file_path):
+    players = []
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip the header row
+        for row in reader:
+            name, rating = row
+            players.append((name, int(rating), "n/a"))
+    return players
 
 def generate_names(size, min_num, max_num):
     unique_first_names = set()
@@ -77,7 +49,9 @@ def generate_names(size, min_num, max_num):
     
     return result
 
-labels = generate_names(20, 0, 20)
+#toggle between generate_names and load_players_from_csv
+# labels = generate_names(20, 0, 20)
+labels = load_players_from_csv('10 Players Standings Rd 4.xlsx - 10 Players.csv')
 
 # Create a graph
 adjacency_matrix = np.zeros((len(labels),len(labels)))
@@ -106,18 +80,40 @@ ratingOutcomeDict = {}
 
 durations = ['full', 3, 'full', 'full']
 
-for i in range(5):
+
+def enter_game_results(G, pairs):
+    for i, j in pairs:
+        if i == 'BYE':
+            G.nodes[j]['score'] += 0.5
+            G.add_edge(j, j, weight=1.5)
+        elif j == 'BYE':
+            G.nodes[i]['score'] += 0.5
+            G.add_edge(i, i, weight=1.5)
+        else:
+            result = input(f"Enter result for {G.nodes[i]['label']} vs {G.nodes[j]['label']} (1 for {G.nodes[i]['label']} win, 0 for {G.nodes[j]['label']} win, 0.5 for draw): ")
+            if result == '1':
+                G.nodes[i]['score'] += 1
+                G.add_edge(i, j, weight=2)
+                G.add_edge(j, i, weight=1)
+            elif result == '0':
+                G.nodes[j]['score'] += 1
+                G.add_edge(i, j, weight=1)
+                G.add_edge(j, i, weight=2)
+            elif result == '0.5':
+                G.nodes[i]['score'] += 0.5
+                G.nodes[j]['score'] += 0.5
+                G.add_edge(i, j, weight=1.5)
+                G.add_edge(j, i, weight=1.5)
+    return G
+
+
+for round_num in range(5):  # Or however many rounds you want
     nodes, edges, ratings, colors, schools = extract_nodes_and_edges(G)
     score_groups, lowest_rated_node = create_score_groups(G, nodes)
 
-    # Example usage of optimize_score_groups function
     updated_groups = plausible_groups(G, score_groups)
-    # print(updated_groups)
-
     upper_lower_groups = best_UL_outcome(G, updated_groups)
-    print(f"groups: {updated_groups}")
-    # print(upper_lower_groups)
-
+    # final_pairings = upper_lower_groups
     final_pairings = extract_final_solution(G, updated_groups, upper_lower_groups)
     pairs = []
     for group in final_pairings:
@@ -125,34 +121,22 @@ for i in range(5):
             pairs.append(j)
     if lowest_rated_node is not None:
         pairs.append((lowest_rated_node, 'BYE'))
-    print(final_pairings)
-    # #score, rating, color, school
-    # pairs, scores, sameSchoolNum = solve_pairing_problem(G, durations[0], durations[1], durations[2], durations[3])
-    # for i in range(len(durations)):
-    #     if isinstance(durations[i], int) and durations[i] > 0:
-    #         durations[i] -= 1
 
-    # for (j,k) in pairs:
-    #     scoreDiff = abs(scores[j] - scores[k])
-    #     ratingDiff = abs(G.nodes[j]['rating'] - G.nodes[k]['rating'])
-    #     weightDiffList.append((scoreDiff, ratingDiff))
-    #     if scoreDiff in sdDict:
-    #         sdDict[scoreDiff] += 1
-    #     else:
-    #         sdDict[scoreDiff] = 1
-    #     print(ratingDiff)
+    # Print pairings by name
+    print(f"Round {round_num + 1} Pairings:")
+    for i, j in pairs:
+        if j == 'BYE':
+            print(f"{G.nodes[i]['label']} has a bye")
+        else:
+            print(f"{G.nodes[i]['label']} vs {G.nodes[j]['label']}")
+    print("\n")  # Add a newline for readability
 
-    
-    
+    # Enter results manually after pairing
+    G = enter_game_results(G, pairs)
 
-    # test_pairs(G, pairs)
-
-    add_weighted_edges(G, pairs)
-
-    filename = 'data/new_node_pair_info_sim'+str(i)+'.csv'
-
+    # Export results to CSV and process data for visualization
+    filename = f'data/new_node_pair_info_round{round_num}.csv'
     export_node_pair_info_to_csv(G, pairs, filename)
-
     dataList.append(transform_csv_data(filename))
     
 for i in dataList:

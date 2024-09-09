@@ -1,0 +1,11 @@
+#,Name,Rating,Rd 1,Rd 2,Rd 3,Rd 4,Total
+1,"Ten, T",2000,W "Five, F",W "Seven, S",D "Nine, N",W "Eight, E", 3.5
+2,"Nine, N",1900,W "Four, F",D "Eight, E",D "Ten, T",W "Seven, S", 3.0
+3,"Eight, E",1800,W "Three, T",D "Nine, N",W "Six, S",L "Ten, T", 2.5
+4,"Five, F",1500,L "Ten, T",D "Six, S",W "Three, T",W "Two, T", 2.5
+5,"Six, S",1600,W "One, P",D "Five, F",L "Eight, E",W "Four, F", 2.5
+6,"Seven, S",1700,W "Two, T",L "Ten, T",W "Four, F",L "Nine, N", 2.0
+7,"Three, T",1300,L "Eight, E",D "Two, T",L "Five, F",W "One, P", 1.5
+8,"Four, F",1400,L "Nine, N",W "One, P",L "Seven, S",L "Six, S", 1.0
+9,"Two, T",1200,L "Seven, S",D "Three, T",D "One, P",L "Five, F", 1.0
+10,"One, P",1100,L "Six, S",L "Four, F",D "Two, T",L "Three, T", 0.5
